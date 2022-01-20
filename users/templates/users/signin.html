@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% if not user.is_authenticated %}
+    <div class="content-section">
+    <form action="" method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group custom">
+        <hr>    
+         
+         <legend>Register Here</legend>
+
+        {{form|crispy}}
+        
+        </fieldset>
+        <input type="submit" class="btn btn-outline-info">
+    </form>
+    </div>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            Already Have an account? <a class="ml-2" href="{% url 'login' %}">Login Here</a>
+        </small>
+    </div>
+{% else %}
+You cannot create a new account while being active Please logout.
+{% endif %}
+<style>
+    .custom
+    {
+        margin-top: 20px;
+        border:1px solid green;
+        max-width:50%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+</style>
+{% endblock %}

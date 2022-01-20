@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="content-section">
+
+<img class="rounded-circle"src="{{user.profile.image.url}}" height=100 width=100  alt="">
+
+    <h3 class="ml-5"style="display:inline;">Welcome {{user.username}}</h3>
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="form-group custom">
+        <hr>    
+         
+         <legend>Update Here</legend>
+
+        {{u_form|crispy}}
+
+        {{p_form|crispy}}
+        
+        </fieldset>
+        <input type="submit" class="btn btn-outline-info">
+    </form>
+
+
+{% endblock %}

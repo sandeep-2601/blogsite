@@ -1,0 +1,81 @@
+{%  extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<form method='GET' class='mb-4 mt-4 styl bg-light'>
+  {{filter.form}}
+  
+  <button type="submit" class="btn btn-outline-primary ml-2">Search</button>
+</form>
+<style>
+.styl
+{
+  display:flex;
+  justify-content: space-between;
+}
+@media (max-width: 800px) {
+  .styl{
+    flex-direction: column;
+  }
+}
+</style>
+{% for i in filter.qs %}
+
+<div class="card" style="margin-bottom: 15px;">
+    <div class="card-body" >
+      
+        <small style="display:inline;float:right;">Post created: {{i.date|date:"F d,Y h:m:s "}}</small>
+        <a href='post/{{i.id}}'><h3 class="card-title">{{i.title}}</h3></a>
+
+        <p class="card-text">{{i.content|truncatewords:15}}</p>
+        <small>Written By-</small>
+        <a href="{% url 'user-post' i.author.username %}"><small>{{i.author.username}}</small></a>
+        <img src={{i.author.profile.image.url}} alt="none" class="rounded-circle" height=70 width =70 style="display: inline;float:right;">
+        <small>#{{i.tag}}</small>
+        {% if i.author == user %}
+            <div class='mt-2'>
+            <a href='/post/{{i.id}}/update/' class='btn btn-outline-primary card-text'>Update Post</a>
+            <a href='/post/{{i.id}}/delete/' class='btn btn-outline-danger card-item'>Delete Post</a>
+            </div>
+        {% endif %}
+      </div>
+</div>
+
+{% endfor %}
+{% if filter.qs %}
+{% if is_paginated %}
+
+<ul class="pagination justify-content-center my-3">
+
+{% if page_obj.has_previous %}
+
+<li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+<li class="page-item"><a class="page-link" href="?page={{page_obj.previous_page_number}}">&#8810</a></li>
+
+{% endif %}
+
+{% for num in page_obj.paginator.page_range %}
+  {% if page_obj.number == num %}
+  <li class="page-item"><a class="page-link bg-light" href="?page={{num}}">{{num}}</a></li>
+  {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+  <li class="page-item"><a class="page-link" href="?page={{num}}">{{num}}</a></li>
+  {% endif %}
+  {% endfor %}
+
+{% if page_obj.has_next %}
+
+  <li class="page-item"><a class="page-link" href="?page={{page_obj.next_page_number}}">&#8811</a></li>
+  <li class="page-item"><a class="page-link" href="?page={{page_obj.paginator.num_pages}}">Last</a></li>
+  
+{% endif %}
+
+</ul>
+{% endif %}
+
+{% else %}
+
+<h3 class="text-center">There are no posts for this filter</h3>
+{% endif %}
+
+{% endblock %}

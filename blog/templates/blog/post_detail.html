@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="card" style="margin-bottom: 15px;">
+        <div class="card-body" >
+        
+            <small style="display:inline;float:right;">Post created: {{object.date|date:"F d,Y h:m:s "}}</small>
+            <h3 class="card-title">{{object.title}}</h3>
+
+            <p class="card-text">{{object.content}}</p>
+            <small>Written By -</small>
+            <a href="{% url 'user-post' object.author.username %}"><small>{{object.author.username}}</small></a>
+            <img src={{object.author.profile.image.url}} alt="none" class="rounded-circle" height=70 width =70 style="display: inline;float:right;">
+            <br>
+            <br>
+            {% if object.author == user %}
+            <a href='/post/{{object.id}}/update/' class='btn btn-outline-primary card-text'>Update Post</a>
+            <a href='/post/{{object.id}}/delete/' class='btn btn-outline-danger card-item'>Delete Post</a>
+            {% endif %}
+        </div>
+        
+    </div>
+{% endblock %}

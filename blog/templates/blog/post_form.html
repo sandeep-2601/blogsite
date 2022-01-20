@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <div class="content-section">
+    <form action="" method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group custom">
+        <hr>    
+         
+         <legend>Create Post</legend>
+
+        {{form|crispy}}
+        
+        </fieldset>
+        <input type="submit" class="btn btn-outline-info" value="Submit">
+    </form>
+
+<style>
+    .custom
+    {
+        margin-top: 20px;
+        border:1px solid green;
+        max-width:50%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+</style>
+{% endblock %}
